@@ -19,7 +19,7 @@ Abra o `index.html` no navegador. Não há dependências.
 
 ## Deploy
 
-Hospedado na Vercel, ligado a este repositório:
+Hospedado na Vercel em [www.galpaodasartes.site](https://www.galpaodasartes.site), ligado a este repositório:
 
 - push na `main` → deploy de produção
 - pull request → deploy de preview com link próprio
