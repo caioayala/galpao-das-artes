@@ -82,9 +82,12 @@ main>section{padding:clamp(72px,10vh,120px) 0;border-bottom:1px solid var(--line
 .facts{display:flex;gap:36px;margin-top:44px;padding-top:24px;border-top:1px solid var(--line)}
 .facts b{display:block;font:400 30px/1 var(--serif);color:var(--gold-hi);margin-bottom:6px}
 .facts span{font-size:14px;color:var(--muted)}
-.hero-pics{grid-column:7/13;display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:end;height:min(calc(100svh - 160px),720px)}
-.hero-pics .frame{height:100%}
-.hero-pics .frame:last-child{height:72%}
+/* foto de fundo do topo: ocupa a metade direita e some para o preto à esquerda */
+.hero{position:relative;overflow:hidden}
+.hero-text{position:relative;z-index:1}
+.hero-bg{position:absolute;top:0;right:0;bottom:0;width:60%}
+.hero-bg img{width:100%;height:100%;object-fit:cover;object-position:60% 35%}
+.hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(13,12,10,.75) 22%,rgba(13,12,10,.15) 55%,rgba(13,12,10,0) 100%)}
 
 .frame{overflow:hidden;background:var(--surface);border-radius:2px}
 .frame img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
@@ -97,11 +100,10 @@ main>section{padding:clamp(72px,10vh,120px) 0;border-bottom:1px solid var(--line
   [data-enter]>*:nth-child(3){animation-delay:.24s}
   [data-enter]>*:nth-child(4){animation-delay:.36s}
   [data-enter]>*:nth-child(5){animation-delay:.48s}
-  .hero-pics .frame{opacity:0;clip-path:inset(100% 0 0 0);animation:reveal 1.1s cubic-bezier(.7,0,.2,1) .2s forwards}
-  .hero-pics .frame:last-child{animation-delay:.38s}
+  .hero-bg{opacity:0;animation:fadein 1.4s ease .1s forwards}
 }
 @keyframes enter{to{opacity:1;transform:none}}
-@keyframes reveal{to{opacity:1;clip-path:inset(0 0 0 0)}}
+@keyframes fadein{to{opacity:1}}
 
 /* projects */
 .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
@@ -158,16 +160,13 @@ footer .brand span{font-size:16px;color:var(--ink)}
 @media (max-width:900px){
   .nav ul{display:none}
   .hero .wrap,.resto .wrap,.contact .wrap,.since,.head{grid-template-columns:1fr}
-  .hero-text,.hero-pics,.resto-text,.compare,.since-year,.list,.contact-text,.areas,.head h2,.head p{grid-column:1/-1}
-  /* hero no celular/tablet: a cozinha vira fundo e o texto fica na frente */
-  .hero{position:relative;overflow:hidden;min-height:calc(100svh - 68px);align-items:flex-end;padding:0 0 40px!important}
-  .hero-text{position:relative;z-index:1;padding-top:min(36vh,420px)}
-  .hero-pics{position:absolute;top:0;left:0;right:0;height:68%;display:block;margin:0}
-  .hero-pics .frame:first-child{height:100%;border-radius:0}
-  .hero-pics .frame:first-child img{object-position:50% 68%}
-  .hero-pics .frame:last-child{display:none}
-  .hero-pics::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,12,10,0) 0%,rgba(13,12,10,.1) 40%,rgba(13,12,10,.8) 75%,var(--bg) 100%)}
-  .hero-pics .frame:hover img{transform:none}
+  .hero-text,.resto-text,.compare,.since-year,.list,.contact-text,.areas,.head h2,.head p{grid-column:1/-1}
+  /* hero no celular/tablet: a foto fica em cima e some para o preto atrás do texto */
+  .hero{min-height:calc(100svh - 68px);align-items:flex-end;padding:0 0 40px!important}
+  .hero-text{padding-top:min(36vh,420px)}
+  .hero-bg{left:0;width:auto;bottom:auto;height:70%}
+  .hero-bg img{object-position:50% 30%}
+  .hero-bg::after{background:linear-gradient(180deg,rgba(13,12,10,.1) 0%,rgba(13,12,10,.2) 40%,rgba(13,12,10,.85) 78%,var(--bg) 100%)}
   .since-year{position:static}
   .head{gap:16px}
 }
@@ -234,10 +233,9 @@ footer .brand span{font-size:16px;color:var(--ink)}
           <div><b>PR e MS</b><span>Umuarama, Ponta Porã e região</span></div>
         </div>
       </div>
-      <div class="hero-pics">
-        <div class="frame"><img src="img/hero-cozinha.webp" alt="Cozinha planejada em cinza e preto com ilha integrada e piso de madeira" width="1000" height="1757" fetchpriority="high"></div>
-        <div class="frame"><img src="img/06-cozinha-preta_1.webp" alt="Detalhe das gavetas pretas com puxadores metálicos" width="1000" height="1778"></div>
-      </div>
+    </div>
+    <div class="hero-bg">
+      <img src="img/hero-armario.webp" alt="Armário alto com portas de vidro e prateleiras iluminadas em tom dourado" width="1086" height="1448" fetchpriority="high">
     </div>
   </section>
 
@@ -297,13 +295,13 @@ footer .brand span{font-size:16px;color:var(--ink)}
       <div class="resto-text">
         <p class="kicker">Restauração e laqueação</p>
         <h2>O móvel antigo volta para o quarto com cara nova.</h2>
-        <p class="lead">Nesta cômoda e nos criados, a pintura cinza deu lugar à laqueação em tom escuro: textura uniforme e acabamento acetinado.</p>
+        <p class="lead">Nesta cômoda e nos criados, a madeira escura recebeu laqueação em cinza claro: textura uniforme e acabamento acetinado.</p>
         <p class="lead">Mande uma foto do seu móvel e dizemos o que dá para fazer.</p>
         <a class="btn btn-line" href="https://wa.me/message/LNIWBX6T6A5KO1" target="_blank" rel="noopener">Enviar foto do móvel</a>
       </div>
       <div class="compare">
-        <div class="frame"><span class="tag">Antes</span><img src="img/laq-antes.webp" alt="Cômoda com espelho e criado-mudo em cinza claro, antes da laqueação" loading="lazy" width="1000" height="1779"></div>
-        <div class="frame"><span class="tag">Depois</span><img src="img/laq-depois.webp" alt="A mesma cômoda com espelho e criado-mudo laqueados em tom escuro" loading="lazy" width="1000" height="1779"></div>
+        <div class="frame"><span class="tag">Antes</span><img src="img/laqueacao-antes.webp" alt="Cômoda com espelho e criado-mudo em madeira escura, antes da laqueação" loading="lazy" width="1000" height="1779"></div>
+        <div class="frame"><span class="tag">Depois</span><img src="img/laqueacao-depois.webp" alt="A mesma cômoda com espelho e criado-mudo laqueados em cinza claro" loading="lazy" width="1000" height="1779"></div>
       </div>
     </div>
   </section>
