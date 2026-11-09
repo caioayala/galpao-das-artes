@@ -76,7 +76,7 @@ main>section{padding:clamp(72px,10vh,120px) 0;border-bottom:1px solid var(--line
 .hero{min-height:min(calc(100svh - 68px),900px);display:flex;align-items:center;padding:40px 0!important}
 .hero .wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center;width:100%}
 .hero-text{grid-column:1/7}
-.hero h1{font-size:clamp(38px,4.3vw,60px);margin:18px 0 20px}
+.hero h1{font-size:clamp(38px,4.3vw,60px);margin:0 0 20px}
 .hero h1 em{font-style:normal;color:var(--gold)}
 .hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 .facts{display:flex;gap:36px;margin-top:44px;padding-top:24px;border-top:1px solid var(--line)}
@@ -188,7 +188,7 @@ footer .brand span{font-size:16px;color:var(--ink)}
 /* celulares com tela baixa */
 @media (max-width:600px) and (max-height:760px){
   .hero-text{padding-top:22vh}
-  .hero h1{font-size:32px;margin:14px 0 16px}
+  .hero h1{font-size:32px;margin:0 0 16px}
   .facts{margin-top:20px;padding-top:18px}
 }
 </style>
@@ -218,7 +218,6 @@ footer .brand span{font-size:16px;color:var(--ink)}
   <section class="hero" id="topo">
     <div class="wrap">
       <div class="hero-text" data-enter>
-        <p class="kicker">Marcenaria em Xambrê - PR</p>
         <h1>Móveis sob medida para cozinha, quarto, banheiro e <em>comércio</em>.</h1>
         <p class="lead">Desenhamos, fabricamos e montamos. Também reformamos, restauramos e laqueamos o móvel que você já tem.</p>
         <div class="actions">
