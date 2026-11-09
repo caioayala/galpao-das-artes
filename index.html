@@ -159,21 +159,38 @@ footer .brand span{font-size:16px;color:var(--ink)}
   .nav ul{display:none}
   .hero .wrap,.resto .wrap,.contact .wrap,.since,.head{grid-template-columns:1fr}
   .hero-text,.hero-pics,.resto-text,.compare,.since-year,.list,.contact-text,.areas,.head h2,.head p{grid-column:1/-1}
-  .hero{min-height:auto}
-  .hero-pics{margin-top:16px;height:min(110vw,640px)}
+  /* hero no celular/tablet: a cozinha vira fundo e o texto fica na frente */
+  .hero{position:relative;overflow:hidden;min-height:calc(100svh - 68px);align-items:flex-end;padding:0 0 40px!important}
+  .hero-text{position:relative;z-index:1;padding-top:min(36vh,420px)}
+  .hero-pics{position:absolute;top:0;left:0;right:0;height:68%;display:block;margin:0}
+  .hero-pics .frame:first-child{height:100%;border-radius:0}
+  .hero-pics .frame:first-child img{object-position:50% 68%}
+  .hero-pics .frame:last-child{display:none}
+  .hero-pics::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,12,10,0) 0%,rgba(13,12,10,.1) 40%,rgba(13,12,10,.8) 75%,var(--bg) 100%)}
+  .hero-pics .frame:hover img{transform:none}
   .since-year{position:static}
   .head{gap:16px}
 }
 @media (max-width:600px){
   body{font-size:16px;padding-bottom:76px}
   .grid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .hero .actions .btn,.contact-text .actions .btn{width:100%;justify-content:center}
-  .facts{gap:22px}
+  .hero{padding-bottom:100px!important} /* espaço da barra fixa */
+  .hero-text{padding-top:30vh}
+  .hero h1{font-size:36px}
+  .hero .actions{display:none} /* no celular o botão de WhatsApp fica na barra fixa */
+  .facts{margin-top:28px;gap:22px}
   .facts b{font-size:24px}
+  .contact-text .actions .btn{width:100%;justify-content:center}
   .nav .btn{display:none}
   .areas{padding:24px}
   .mobile-bar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(13,12,10,.95);border-top:1px solid var(--line)}
   .mobile-bar .btn{width:100%;justify-content:center}
+}
+/* celulares com tela baixa */
+@media (max-width:600px) and (max-height:760px){
+  .hero-text{padding-top:22vh}
+  .hero h1{font-size:32px;margin:14px 0 16px}
+  .facts{margin-top:20px;padding-top:18px}
 }
 </style>
 </head>
@@ -218,7 +235,7 @@ footer .brand span{font-size:16px;color:var(--ink)}
         </div>
       </div>
       <div class="hero-pics">
-        <div class="frame"><img src="img/03-cozinha-ilha_0.webp" alt="Cozinha planejada em cinza e preto com ilha integrada e piso de madeira" width="1000" height="1800" fetchpriority="high"></div>
+        <div class="frame"><img src="img/hero-cozinha.webp" alt="Cozinha planejada em cinza e preto com ilha integrada e piso de madeira" width="1000" height="1757" fetchpriority="high"></div>
         <div class="frame"><img src="img/06-cozinha-preta_1.webp" alt="Detalhe das gavetas pretas com puxadores metálicos" width="1000" height="1778"></div>
       </div>
     </div>
