@@ -38,7 +38,7 @@ body{background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit
 img{display:block;max-width:100%}
 a{color:inherit}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
-h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spacing:-.01em}
+h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;letter-spacing:-.01em;text-wrap:balance}
 h2{font-size:clamp(34px,4.4vw,56px)}
 .kicker{font:400 16px/1.2 var(--serif);letter-spacing:.1em;text-transform:uppercase;color:var(--gold)}
 .lead{color:var(--muted);font-size:clamp(17px,1.4vw,19px);max-width:52ch}
@@ -86,7 +86,8 @@ main>section{padding:clamp(72px,10vh,120px) 0;border-bottom:1px solid var(--line
 .hero-bg img{width:100%;height:100%;object-fit:cover;object-position:60% 35%}
 .hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--bg) 0%,rgba(13,12,10,.75) 22%,rgba(13,12,10,.15) 55%,rgba(13,12,10,0) 100%)}
 
-.frame{overflow:hidden;background:var(--surface);border-radius:2px}
+.frame{display:block;overflow:hidden;background:var(--surface);border-radius:2px}
+a.frame{cursor:zoom-in}
 .frame img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
 .frame:hover img{transform:scale(1.03)}
 
@@ -103,14 +104,17 @@ main>section{padding:clamp(72px,10vh,120px) 0;border-bottom:1px solid var(--line
 @keyframes fadein{to{opacity:1}}
 
 /* projects */
-.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-.grid figure .frame{aspect-ratio:9/14}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px 16px}
+.grid figure .frame{aspect-ratio:4/5}
+/* a primeira foto ocupa metade da largura e três linhas */
+.grid .feature{grid-column:span 2;grid-row:span 3;display:flex;flex-direction:column}
+.grid .feature .frame{aspect-ratio:auto;flex:1;min-height:0}
 .grid figcaption{margin-top:12px;font-size:15px;line-height:1.35}
 .grid figcaption small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
 
 /* restoration */
 .resto .wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;align-items:center}
-.resto-text{grid-column:1/6}
+.resto-text{grid-column:1/7;padding-right:32px}
 .resto-text h2{margin:18px 0 22px}
 .compare{grid-column:7/13;display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .compare .frame{aspect-ratio:9/14;position:relative}
@@ -148,12 +152,37 @@ footer .brand span{font-size:16px;color:var(--ink)}
 
 .mobile-bar{display:none}
 
+/* foto em tela cheia */
+.lightbox{width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:rgba(8,7,6,.96);color:var(--ink)}
+.lightbox::backdrop{background:rgba(8,7,6,.96)}
+.lightbox[open]{display:flex;align-items:center;justify-content:center}
+.lightbox img{max-width:min(92vw,900px);max-height:86vh;width:auto;height:auto;object-fit:contain;border-radius:2px}
+.lb-btn{position:absolute;display:grid;place-items:center;width:48px;height:48px;border:1px solid var(--line);border-radius:2px;background:rgba(13,12,10,.7);color:var(--ink);cursor:pointer;transition:border-color .2s,color .2s,transform .12s}
+.lb-btn:hover{border-color:var(--gold);color:var(--gold-hi)}
+.lb-btn:active{transform:scale(.96)}
+.lb-btn svg{width:22px;height:22px}
+.lb-close{top:16px;right:16px}
+.lb-prev{left:16px;top:50%;margin-top:-24px}
+.lb-next{right:16px;top:50%;margin-top:-24px}
+.lb-count{position:absolute;bottom:20px;left:0;right:0;text-align:center;font-size:14px;color:var(--muted)}
+
+/* botão do menu (só aparece no celular/tablet) */
+.menu-btn{display:none;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:2px;background:none;color:var(--ink);font:600 14px/1 var(--sans);cursor:pointer}
+.menu-btn svg{width:18px;height:18px}
+.menu-btn:hover{border-color:var(--gold)}
+
 @media (max-width:1100px){
-  .grid{grid-template-columns:repeat(3,1fr)}
   .nav ul{gap:20px}
 }
 @media (max-width:900px){
-  .nav ul{display:none}
+  .menu-btn{display:inline-flex}
+  .nav ul{display:none;position:absolute;top:68px;left:0;right:0;flex-direction:column;gap:0;padding:8px var(--gut) 20px;background:var(--bg);border-bottom:1px solid var(--line)}
+  .nav ul.open{display:flex}
+  .nav ul a{display:block;padding:14px 0;font-size:18px;color:var(--ink);border-bottom:1px solid var(--line);background:none}
+  .nav li:last-child a{border-bottom:0}
+  .resto-text{padding-right:0}
+  .lb-prev,.lb-next{top:auto;bottom:16px;margin:0}
+  .lb-count{bottom:30px}
   .hero .wrap,.resto .wrap,.contact .wrap,.since,.head{grid-template-columns:1fr}
   .hero-text,.resto-text,.compare,.since-year,.list,.contact-text,.areas,.head h2,.head p{grid-column:1/-1}
   /* hero no celular/tablet: a foto fica em cima e some para o preto atrás do texto */
@@ -164,10 +193,13 @@ footer .brand span{font-size:16px;color:var(--ink)}
   .hero-bg::after{background:linear-gradient(180deg,rgba(13,12,10,.1) 0%,rgba(13,12,10,.2) 40%,rgba(13,12,10,.85) 78%,var(--bg) 100%)}
   .since-year{position:static}
   .head{gap:16px}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .grid .feature{grid-row:auto}
+  .grid .feature .frame{aspect-ratio:4/5;flex:none}
 }
 @media (max-width:600px){
   body{font-size:16px;padding-bottom:76px}
-  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .grid{gap:20px 12px}
   .hero{padding-bottom:100px!important} /* espaço da barra fixa */
   .hero-text{padding-top:30vh}
   .hero h1{font-size:36px}
@@ -195,7 +227,11 @@ footer .brand span{font-size:16px;color:var(--ink)}
       <span>Galpão das Artes</span>
     </a>
     <nav aria-label="Principal">
-      <ul>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        Menu
+      </button>
+      <ul id="menu">
         <li><a href="#projetos">Projetos</a></li>
         <li><a href="#restauracao">Restauração</a></li>
         <li><a href="#servicos">Serviços</a></li>
@@ -233,44 +269,32 @@ footer .brand span{font-size:16px;color:var(--ink)}
         <p class="lead">Cada peça é feita para o ambiente e as medidas da casa ou da loja. Nada sai de catálogo.</p>
       </div>
       <div class="grid">
-        <figure>
-          <div class="frame"><img src="img/03-cozinha-ilha_3.webp" alt="Ilha de cozinha em MDF preto com cuba embutida" loading="lazy" width="1000" height="1800"></div>
+        <figure class="feature">
+          <a class="frame" href="img/proj-cozinha-ilha.webp" data-lightbox="projetos"><img src="img/proj-cozinha-ilha.webp" alt="Ilha de cozinha em MDF preto com cuba embutida" loading="lazy" width="1000" height="1771"></a>
           <figcaption>Cozinha com ilha<small>MDF preto e cinza</small></figcaption>
         </figure>
         <figure>
-          <div class="frame"><img src="img/01-cozinha-led_3.webp" alt="Cozinha planejada clara com iluminação de LED sob os armários" loading="lazy" width="1000" height="1800"></div>
+          <a class="frame" href="img/proj-cozinha-led.webp" data-lightbox="projetos"><img src="img/proj-cozinha-led.webp" alt="Cozinha planejada clara com iluminação de LED sob os armários" loading="lazy" width="1000" height="1771"></a>
           <figcaption>Cozinha com LED<small>Iluminação embutida</small></figcaption>
         </figure>
         <figure>
-          <div class="frame"><img src="img/02-banheiro_4.webp" alt="Gabinete de banheiro com armário de espelho" loading="lazy" width="1000" height="1778"></div>
+          <a class="frame" href="img/proj-banheiro.webp" data-lightbox="projetos"><img src="img/proj-banheiro.webp" alt="Gabinete de banheiro com armário de espelho" loading="lazy" width="807" height="1800"></a>
           <figcaption>Banheiro<small>Gabinete e armário com espelho</small></figcaption>
         </figure>
         <figure>
-          <div class="frame"><img src="img/05-sala-painel_5.webp" alt="Painel ripado e rack suspenso em cinza grafite" loading="lazy" width="1000" height="1778"></div>
+          <a class="frame" href="img/05-sala-painel_5.webp" data-lightbox="projetos"><img src="img/05-sala-painel_5.webp" alt="Painel ripado e rack suspenso em cinza grafite" loading="lazy" width="1000" height="1778"></a>
           <figcaption>Sala<small>Painel ripado e rack suspenso</small></figcaption>
         </figure>
         <figure>
-          <div class="frame"><img src="img/07-dormitorio-painel_0.webp" alt="Dormitório com painel, rack, penteadeira e porta de correr embutida" loading="lazy" width="1000" height="1778"></div>
+          <a class="frame" href="img/07-dormitorio-painel_0.webp" data-lightbox="projetos"><img src="img/07-dormitorio-painel_0.webp" alt="Dormitório com painel, rack, penteadeira e porta de correr embutida" loading="lazy" width="1000" height="1778"></a>
           <figcaption>Dormitório<small>Painel com acesso oculto ao closet</small></figcaption>
         </figure>
         <figure>
-          <div class="frame"><img src="img/10-quarto-tabaco_5.webp" alt="Guarda-roupa de portas deslizantes em MDF tabaco" loading="lazy" width="1000" height="1778"></div>
+          <a class="frame" href="img/10-quarto-tabaco_5.webp" data-lightbox="projetos"><img src="img/10-quarto-tabaco_5.webp" alt="Guarda-roupa de portas deslizantes em MDF tabaco" loading="lazy" width="1000" height="1778"></a>
           <figcaption>Quarto<small>MDF tabaco, portas deslizantes</small></figcaption>
         </figure>
         <figure>
-          <div class="frame"><img src="img/12-guarda-roupa-tabaco_3.webp" alt="Guarda-roupa aberto mostrando prateleiras e cabideiro" loading="lazy" width="1000" height="1778"></div>
-          <figcaption>Guarda-roupa<small>Interno planejado</small></figcaption>
-        </figure>
-        <figure>
-          <div class="frame"><img src="img/06-cozinha-preta_3.webp" alt="Cozinha com armários pretos e tampo em madeira" loading="lazy" width="1000" height="1778"></div>
-          <figcaption>Cozinha preta<small>Tons escuros com madeira</small></figcaption>
-        </figure>
-        <figure>
-          <div class="frame"><img src="img/04-barbearia_4.webp" alt="Armários e estante pretos de uma barbearia" loading="lazy" width="1000" height="1779"></div>
-          <figcaption>Barbearia<small>Estante e balcão</small></figcaption>
-        </figure>
-        <figure>
-          <div class="frame"><img src="img/11-cristaleira_4.webp" alt="Cristaleira branca com portas de vidro em uma loja" loading="lazy" width="1000" height="1778"></div>
+          <a class="frame" href="img/proj-perfumaria.webp" data-lightbox="projetos"><img src="img/proj-perfumaria.webp" alt="Cristaleira branca com portas de vidro em uma loja" loading="lazy" width="1000" height="1759"></a>
           <figcaption>Perfumaria<small>Cristaleira com portas de vidro</small></figcaption>
         </figure>
       </div>
@@ -282,10 +306,11 @@ footer .brand span{font-size:16px;color:var(--ink)}
       <div class="resto-text">
         <p class="kicker">Restauração e laqueação</p>
         <h2>O móvel antigo volta para o quarto com cara nova.</h2>
-        <p class="lead">Nesta cômoda e nos criados, a madeira escura recebeu laqueação em cinza claro: textura uniforme e acabamento acetinado.</p>      </div>
+        <p class="lead">Nesta cômoda e nos criados, a madeira escura recebeu laqueação em cinza claro: textura uniforme e acabamento acetinado.</p>
+      </div>
       <div class="compare">
-        <div class="frame"><span class="tag">Antes</span><img src="img/laqueacao-antes.webp" alt="Cômoda com espelho e criado-mudo em madeira escura, antes da laqueação" loading="lazy" width="1000" height="1779"></div>
-        <div class="frame"><span class="tag">Depois</span><img src="img/laqueacao-depois.webp" alt="A mesma cômoda com espelho e criado-mudo laqueados em cinza claro" loading="lazy" width="1000" height="1779"></div>
+        <a class="frame" href="img/laqueacao-antes.webp" data-lightbox="restauracao"><span class="tag">Antes</span><img src="img/laqueacao-antes.webp" alt="Cômoda com espelho e criado-mudo em madeira escura, antes da laqueação" loading="lazy" width="1000" height="1779"></a>
+        <a class="frame" href="img/laqueacao-depois.webp" data-lightbox="restauracao"><span class="tag">Depois</span><img src="img/laqueacao-depois.webp" alt="A mesma cômoda com espelho e criado-mudo laqueados em cinza claro" loading="lazy" width="1000" height="1779"></a>
       </div>
     </div>
   </section>
@@ -347,5 +372,56 @@ footer .brand span{font-size:16px;color:var(--ink)}
 <div class="mobile-bar">
   <a class="btn btn-gold" href="https://wa.me/message/LNIWBX6T6A5KO1" target="_blank" rel="noopener">Pedir orçamento no WhatsApp</a>
 </div>
+
+<dialog class="lightbox" aria-label="Foto ampliada">
+  <img src="" alt="">
+  <button class="lb-btn lb-close" type="button" aria-label="Fechar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <button class="lb-btn lb-prev" type="button" aria-label="Foto anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <button class="lb-btn lb-next" type="button" aria-label="Próxima foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  <p class="lb-count" aria-live="polite"></p>
+</dialog>
+
+<script>
+// Menu do celular: abre/fecha e fecha ao escolher um link
+const menuBtn = document.querySelector('.menu-btn');
+const menu = document.getElementById('menu');
+menuBtn.addEventListener('click', () => {
+  const open = menu.classList.toggle('open');
+  menuBtn.setAttribute('aria-expanded', open);
+});
+menu.addEventListener('click', e => {
+  if (e.target.closest('a')) { menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', 'false'); }
+});
+
+// Fotos em tela cheia: sem JavaScript, o link abre a imagem normalmente
+const todos = [...document.querySelectorAll('[data-lightbox]')];
+let links = todos;
+const box = document.querySelector('.lightbox');
+const boxImg = box.querySelector('img');
+const count = box.querySelector('.lb-count');
+let atual = 0;
+function mostrar(i) {
+  atual = (i + links.length) % links.length;
+  const img = links[atual].querySelector('img');
+  boxImg.src = links[atual].href;
+  boxImg.alt = img.alt;
+  count.textContent = (atual + 1) + ' de ' + links.length;
+}
+// cada seção navega só entre as próprias fotos
+todos.forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  links = todos.filter(l => l.dataset.lightbox === a.dataset.lightbox);
+  mostrar(links.indexOf(a));
+  box.showModal();
+}));
+box.querySelector('.lb-close').addEventListener('click', () => box.close());
+box.querySelector('.lb-prev').addEventListener('click', () => mostrar(atual - 1));
+box.querySelector('.lb-next').addEventListener('click', () => mostrar(atual + 1));
+box.addEventListener('click', e => { if (e.target === box) box.close(); });
+box.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') mostrar(atual - 1);
+  if (e.key === 'ArrowRight') mostrar(atual + 1);
+});
+</script>
 </body>
 </html>
